@@ -5,11 +5,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using Vuplex.WebView;
 using TMPro;
+using Coherence.Toolkit;
 public class PlayerManager : MonoBehaviour
 {
+    CoherenceBridge bridge;
     public InputManager inputManager;
     public CameraManager cameraManager;
     public PlayerLocomotion playerLocomotion;
+    public MovieManager movieManager;
     public string playerName;
     public Button button;
     //public Transform theatreSpawn;
@@ -30,6 +33,7 @@ public class PlayerManager : MonoBehaviour
     public string profileUrl;
     public string geminiUrl;
     public GameObject startMovieButton;
+    
     //public void Teleport(Transform spawn)
     //{
     //    Fades.instance.FadeIn(2, () => { transform.position = spawn.position; });
@@ -60,7 +64,9 @@ public class PlayerManager : MonoBehaviour
         mallSpawn = GameObject.Find("mallSpawn").transform;
         mapSpawn = GameObject.Find("mapSpawn").transform;
         theatreSpawn = GameObject.Find("theatreSpawn").transform;
+        movieManager = FindObjectOfType<MovieManager>();
         roomSpawn = GameObject.Find("roomSpawn").transform;
+        bridge = FindObjectOfType<CoherenceBridge>();
         //adsSpawn = GameObject.Find("adsSpawn").transform;
         //nikeSpawn = GameObject.Find("nikeSpawn").transform;
         //cafeSpawn = GameObject.Find("cafeSpawn").transform;
@@ -79,7 +85,7 @@ public class PlayerManager : MonoBehaviour
         galleryButton = GameObject.Find("profileButton").GetComponent<Button>();
         startMovieButton = GameObject.Find("playTheatreButton");
         galleryUI = GameObject.Find("galeryUI");
-        aiUI = GameObject.Find("aiChat");
+        aiUI = GameObject.Find("chatGptChatbotui");
 
         canvasWebViewPrefab = FindObjectOfType<CanvasWebViewPrefab>();
         cameraManager.inputManager = inputManager;
@@ -91,6 +97,9 @@ public class PlayerManager : MonoBehaviour
         startMovieButton.SetActive(false);
         TestGallery.instance.StartUploadName();
         galleryButton.onClick.AddListener(LoadWebView);
+
+        startMovieButton.GetComponent<Button>().onClick.AddListener(PlayMovie);
+        movieManager.exitMovieButton.onClick.AddListener(ExitMovie);
 
     }
 
@@ -146,7 +155,7 @@ public class PlayerManager : MonoBehaviour
                 //TestGallery.instance.playerName = other.GetComponent<PlayerManager>().playerName;
                 string name = other.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().text;
                 string tempName = string.Concat(name.Where(c => !char.IsWhiteSpace(c))).ToLower();
-                profileUrl = $"https://twis.in/shop/apis/snudata/{tempName}/index.php";
+                profileUrl = $"https://twis.in/shop/cicapi/snudata/{tempName}/index.php";
 
                 galleryButton.gameObject.SetActive(true);
 
@@ -219,7 +228,27 @@ public class PlayerManager : MonoBehaviour
         canvasWebViewPrefab.WebView.LoadUrl(geminiUrl);
     }
 
+    
+    public void PlayMovie()
+    {
+        movieManager.StartMovie();
+        CoherenceClientConnection myConnection = bridge.ClientConnections.GetMine();
+        myConnection.SendClientMessage<PlayerManager>(nameof(OnPlaying), Coherence.MessageTarget.All, true);
+    }    
 
+ 
+    public void ExitMovie()
+    {
+        movieManager.StopMovie();
+        CoherenceClientConnection myConnection = bridge.ClientConnections.GetMine();
+        myConnection.SendClientMessage<PlayerManager>(nameof(OnPlaying), Coherence.MessageTarget.All, false);
+    }
+
+    [Command]
+    public void OnPlaying(bool toggle)
+    {
+        movieManager.IsPlaying = toggle;
+    }
 
 
 }

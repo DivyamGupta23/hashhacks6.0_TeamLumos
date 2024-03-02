@@ -9,8 +9,9 @@ using TMPro;
 public class TestGallery : MonoBehaviour
 {
     public string imageURL; 
-	public string nameURL = "https://twis.in/shop/apis/text.php";
+	public string nameURL = "https://twis.in/shop/cicapi/text.php";
 	[SerializeField]public Texture2D texture;
+	//[SerializeField]public Texture2D aiTexture;
     [HideInInspector]public byte[] data;
     public string playerName;
     public InputField playerNameInput;
@@ -26,12 +27,14 @@ public class TestGallery : MonoBehaviour
     public RawImage pickedImage;
     public GameObject captionUI;
     public Button _sendPostButton;
+    public ImageGenerator genAI;
     private void Awake()
     {
         instance = this;    
     }
     private void Start()
     {
+        _sendPostButton.onClick.AddListener(StartUpload);
         playerNameInput.text  = PlayerPrefs.GetString("PlayerName", "Unknown");
         
     }
@@ -43,8 +46,9 @@ public class TestGallery : MonoBehaviour
            if (path != null)
            {
             // Create Texture from selected image
-            texture = NativeGallery.LoadImageAtPath(path);
-               data = texture.GetRawTextureData();
+               texture = NativeGallery.LoadImageAtPath(path);
+               //File.WriteAllBytes(Application.persistentDataPath + "/art" + "uploadImg", data);
+               data = File.ReadAllBytes(path);
                imageName = Path.GetFileName(path);
                Texture2D temp_texture = new Texture2D((int)ImageCube.GetComponent<MeshRenderer>().bounds.size.x, (int)ImageCube.GetComponent<MeshRenderer>().bounds.size.y);
                temp_texture.LoadImage(data);
@@ -62,10 +66,11 @@ public class TestGallery : MonoBehaviour
 
         Debug.Log("Permission result: " + permission);
         Debug.Log("Image loaded successfully");
-
+        genAI.sendPostButton.gameObject.SetActive(false);
+        _sendPostButton.gameObject.SetActive(true);
         captionUI.SetActive(true);
-        _sendPostButton.onClick.AddListener(() => { SetCaption(_captionInput.text); });
-         pickedImage.texture = texture;
+
+        pickedImage.texture = texture;
     }
     
     
@@ -90,8 +95,7 @@ public class TestGallery : MonoBehaviour
     {
         notification.text = "Uploading Image";
         WWWForm form = new WWWForm();
-        form.AddBinaryData("file", data, $"{imageName}"); 
-
+        form.AddBinaryData("file", data, $"{imageName}");
         using (UnityWebRequest www = UnityWebRequest.Post(imageURL, form))
         {
             yield return www.SendWebRequest();
@@ -99,14 +103,16 @@ public class TestGallery : MonoBehaviour
             if (www.isNetworkError || www.isHttpError)
             {
                 notification.text = "Error uploading image";
-                Debug.LogError(www.error);
+                Debug.LogError(www.error);  
+                Debug.LogError(imageURL);  
                 Invoke("CleanNotification", 2.5f);
             }
             else
             {
-                notificationUI.SetActive(true);
+              //  notificationUI.SetActive(true);
                 notification.text = "Image uploaded successfully";
                 Debug.Log("Image uploaded successfully: " + www.downloadHandler.text);
+                Debug.Log(imageURL);
                 Invoke("CleanNotification", 2.5f);
             }
         }
@@ -119,7 +125,7 @@ public class TestGallery : MonoBehaviour
     void CleanNotification()
     {
         notification.text = "";
-        notificationUI.SetActive(false);
+        //notificationUI.SetActive(false);
     }
 
 
@@ -135,7 +141,7 @@ public class TestGallery : MonoBehaviour
         if (!setUpComplete) StartCoroutine(UploadName());
         else 
         {
-            imageURL = $"https://twis.in/shop/apis/snudata/{playerName}/index.php";
+            imageURL = $"https://twis.in/shop/cicapi/snudata/{playerName}/index.php";
             Debug.Log("already setup");
             Debug.Log(playerName);
             Debug.Log(imageURL);
@@ -159,7 +165,7 @@ public class TestGallery : MonoBehaviour
             else
             {
                 Debug.Log("name uploaded successfully: " + www.downloadHandler.text);
-                imageURL = $"https://twis.in/shop/apis/snudata/{name}/index.php";
+                imageURL = $"https://twis.in/shop/cicapi/snudata/{name}/index.php";
                 playerName = name;
                 Debug.Log(imageURL);
                 Debug.Log(playerName);

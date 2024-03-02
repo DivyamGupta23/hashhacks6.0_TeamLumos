@@ -15,23 +15,30 @@ public class MovieManager : MonoBehaviour
     [Header("urls")]
     public string movieUrl;
     public string staticUrl;
-
+  
     private void Awake()
     {
         instance = this;
     }
+    //private void Start()
+    //{
+      
+    //    startMovieButton.onClick.AddListener(StartMovie);
+    //    exitMovieButton.onClick.AddListener(StopMovie);
+    //}
     public async void StartMovie()
     {
+        theatreCam.SetActive(true);
         await webView.WaitUntilInitialized();
         webView.WebView.LoadUrl(movieUrl);
-        GetComponent<CoherenceSync>().SendCommand<MovieManager>(nameof(OnPlaying),Coherence.MessageTarget.All,true);
 
     }    
     public async void StopMovie()
     {
+        theatreCam.SetActive(false);
         await webView.WaitUntilInitialized();
         webView.WebView.LoadUrl(staticUrl);
-        GetComponent<CoherenceSync>().SendCommand<MovieManager>(nameof(OnPlaying),Coherence.MessageTarget.All,false);
+
 
     }
     public void OnPlaying(bool toggle)
