@@ -88,6 +88,7 @@ public class PlayerManager : MonoBehaviour
         galleryUI.SetActive(false);
         aiUI.SetActive(false);
         galleryButton.gameObject.SetActive(false);
+        startMovieButton.SetActive(false);
         TestGallery.instance.StartUploadName();
         galleryButton.onClick.AddListener(LoadWebView);
 

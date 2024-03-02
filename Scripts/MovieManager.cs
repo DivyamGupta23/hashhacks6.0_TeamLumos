@@ -11,7 +11,7 @@ public class MovieManager : MonoBehaviour
     public Button exitMovieButton;
     public GameObject theatreCam;
     public static MovieManager instance;
-    public WebViewPrefab webView;
+    public CanvasWebViewPrefab webView;
     [Header("urls")]
     public string movieUrl;
     public string staticUrl;
