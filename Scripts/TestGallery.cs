@@ -10,8 +10,8 @@ public class TestGallery : MonoBehaviour
 {
     public string imageURL; 
 	public string nameURL = "https://twis.in/shop/apis/text.php";
-	[SerializeField]Texture2D texture;
-    byte[] data;
+	[SerializeField]public Texture2D texture;
+    [HideInInspector]public byte[] data;
     public string playerName;
     public InputField playerNameInput;
     public GameObject ImageCube;
@@ -44,12 +44,13 @@ public class TestGallery : MonoBehaviour
            {
             // Create Texture from selected image
             texture = NativeGallery.LoadImageAtPath(path);
-               data = File.ReadAllBytes(path);
+               data = texture.GetRawTextureData();
                imageName = Path.GetFileName(path);
                Texture2D temp_texture = new Texture2D((int)ImageCube.GetComponent<MeshRenderer>().bounds.size.x, (int)ImageCube.GetComponent<MeshRenderer>().bounds.size.y);
                temp_texture.LoadImage(data);
                Material material = ImageCube.GetComponent<Renderer>().material;
                material.mainTexture = texture;
+               
 
                if (texture == null)
                {
