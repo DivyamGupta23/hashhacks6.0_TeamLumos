@@ -170,7 +170,8 @@ public class PlayerManager : MonoBehaviour
         }         
         else if (other.CompareTag("theatreSpawn"))
         {
-            TeleportFade(theatreSpawn);
+            if (!MovieManager.instance.IsPlaying) TeleportFade(theatreSpawn);
+            else Debug.Log("already playing a movie");
         }          
         else if (other.CompareTag("roomSpawn"))
         {
