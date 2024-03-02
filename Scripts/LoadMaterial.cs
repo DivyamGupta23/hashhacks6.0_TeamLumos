@@ -20,6 +20,8 @@ public class LoadMaterial : MonoBehaviour
             Debug.LogError("Failed to load the material:"+ e);
         }
     }
+
+    [Command]
     public void ChangeColor()
     {
         _mat = Resources.Load<Material>("playerMaterial");

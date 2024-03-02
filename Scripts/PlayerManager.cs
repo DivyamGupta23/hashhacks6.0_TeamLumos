@@ -187,10 +187,10 @@ public class PlayerManager : MonoBehaviour
         {
             TeleportFade(roomSpawn);
         }          
-        else if (other.CompareTag("screen"))
-        {
-            startMovieButton.SetActive(true);
-        }  
+        //else if (other.CompareTag("screen"))
+        //{
+        //    startMovieButton.SetActive(true);
+        //}  
         else if (other.CompareTag("robot"))
         {
             aiUI.SetActive(true);
