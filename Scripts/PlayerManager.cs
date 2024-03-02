@@ -20,6 +20,7 @@ public class PlayerManager : MonoBehaviour
     //public Transform lobbySpawn;
     public Transform mapSpawn;
     public Transform theatreSpawn;
+    public Transform roomSpawn;
     public Transform mallSpawn;
     public GameObject galleryUI;
     public GameObject aiUI;
@@ -58,6 +59,7 @@ public class PlayerManager : MonoBehaviour
         mallSpawn = GameObject.Find("mallSpawn").transform;
         mapSpawn = GameObject.Find("mapSpawn").transform;
         theatreSpawn = GameObject.Find("theatreSpawn").transform;
+        roomSpawn = GameObject.Find("roomSpawn").transform;
         //adsSpawn = GameObject.Find("adsSpawn").transform;
         //nikeSpawn = GameObject.Find("nikeSpawn").transform;
         //cafeSpawn = GameObject.Find("cafeSpawn").transform;
@@ -166,7 +168,11 @@ public class PlayerManager : MonoBehaviour
         }         
         else if (other.CompareTag("theatreSpawn"))
         {
-            TeleportFade(mapSpawn);
+            TeleportFade(theatreSpawn);
+        }          
+        else if (other.CompareTag("roomSpawn"))
+        {
+            TeleportFade(roomSpawn);
         }  
         else if (other.CompareTag("robot"))
         {
