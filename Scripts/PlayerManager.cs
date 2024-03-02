@@ -19,6 +19,7 @@ public class PlayerManager : MonoBehaviour
     //public Transform cafeSpawn;
     //public Transform lobbySpawn;
     public Transform mapSpawn;
+    public Transform theatreSpawn;
     public Transform mallSpawn;
     public GameObject galleryUI;
     public GameObject aiUI;
@@ -40,7 +41,7 @@ public class PlayerManager : MonoBehaviour
     }
     public void TeleportFade( Transform spawnPos)
     {
-        Fades.instance.FadeIn(0.1f);
+        Fades.instance.FadeIn(0.01f);
         Teleport(spawnPos);
         Invoke("FadeOutt", 2.8f);
     }
@@ -56,6 +57,7 @@ public class PlayerManager : MonoBehaviour
         // spawn = GameObject.Find("spawntest").transform;
         mallSpawn = GameObject.Find("mallSpawn").transform;
         mapSpawn = GameObject.Find("mapSpawn").transform;
+        theatreSpawn = GameObject.Find("theatreSpawn").transform;
         //adsSpawn = GameObject.Find("adsSpawn").transform;
         //nikeSpawn = GameObject.Find("nikeSpawn").transform;
         //cafeSpawn = GameObject.Find("cafeSpawn").transform;
@@ -159,6 +161,10 @@ public class PlayerManager : MonoBehaviour
             TeleportFade(mallSpawn);
         }      
         else if (other.CompareTag("exitMall"))
+        {
+            TeleportFade(mapSpawn);
+        }         
+        else if (other.CompareTag("theatreSpawn"))
         {
             TeleportFade(mapSpawn);
         }  
