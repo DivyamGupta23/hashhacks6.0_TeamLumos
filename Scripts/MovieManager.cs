@@ -3,23 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Coherence.Toolkit;
+using Vuplex.WebView;
 public class MovieManager : MonoBehaviour
 {
-    [OnValueSynced(nameof(OnPlaying))]
     public bool IsPlaying = false ;
     public Button startMovieButton;
     public Button exitMovieButton;
     public GameObject theatreCam;
-    public Collider theatreEntranceCollider;
     public static MovieManager instance;
+    public WebViewPrefab webView;
+    [Header("urls")]
+    public string movieUrl;
+    public string staticUrl;
+
     private void Awake()
     {
         instance = this;
     }
-    public void OnPlaying()
+    public async void StartMovie()
     {
-        IsPlaying = true;
-        theatreEntranceCollider.isTrigger = false;
+        await webView.WaitUntilInitialized();
+        webView.WebView.LoadUrl(movieUrl);
+        GetComponent<CoherenceSync>().SendCommand<MovieManager>(nameof(OnPlaying),Coherence.MessageTarget.All,true);
+
+    }    
+    public async void StopMovie()
+    {
+        await webView.WaitUntilInitialized();
+        webView.WebView.LoadUrl(staticUrl);
+        GetComponent<CoherenceSync>().SendCommand<MovieManager>(nameof(OnPlaying),Coherence.MessageTarget.All,false);
+
+    }
+    public void OnPlaying(bool toggle)
+    {
+        IsPlaying = toggle;
     }
 
 }
