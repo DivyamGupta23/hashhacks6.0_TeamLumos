@@ -29,6 +29,7 @@ public class PlayerManager : MonoBehaviour
     public CanvasWebViewPrefab canvasWebViewPrefab;
     public string profileUrl;
     public string geminiUrl;
+    public GameObject startMovieButton;
     //public void Teleport(Transform spawn)
     //{
     //    Fades.instance.FadeIn(2, () => { transform.position = spawn.position; });
@@ -76,6 +77,7 @@ public class PlayerManager : MonoBehaviour
 
         playerLocomotion.cameraObject = cameraManager.cameraTransform;
         galleryButton = GameObject.Find("profileButton").GetComponent<Button>();
+        startMovieButton = GameObject.Find("playTheatreButton");
         galleryUI = GameObject.Find("galeryUI");
         aiUI = GameObject.Find("aiChat");
 
@@ -173,6 +175,10 @@ public class PlayerManager : MonoBehaviour
         else if (other.CompareTag("roomSpawn"))
         {
             TeleportFade(roomSpawn);
+        }          
+        else if (other.CompareTag("screen"))
+        {
+            startMovieButton.SetActive(true);
         }  
         else if (other.CompareTag("robot"))
         {
@@ -189,6 +195,7 @@ public class PlayerManager : MonoBehaviour
         try
         {
             galleryButton.gameObject.SetActive(false);
+            startMovieButton.SetActive(false);
             galleryUI.SetActive(false);
             aiUI.SetActive(false);
         }
