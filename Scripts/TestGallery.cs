@@ -54,8 +54,10 @@ public class TestGallery : MonoBehaviour
                temp_texture.LoadImage(data);
                Material material = ImageCube.GetComponent<Renderer>().material;
                material.mainTexture = texture;
-               
-
+               genAI.sendPostButton.gameObject.SetActive(false);
+               _sendPostButton.gameObject.SetActive(true);
+               captionUI.SetActive(true);
+               pickedImage.texture = texture;
                if (texture == null)
                {
                    Debug.Log("Couldn't load texture from " + path);
@@ -66,11 +68,9 @@ public class TestGallery : MonoBehaviour
 
         Debug.Log("Permission result: " + permission);
         Debug.Log("Image loaded successfully");
-        genAI.sendPostButton.gameObject.SetActive(false);
-        _sendPostButton.gameObject.SetActive(true);
-        captionUI.SetActive(true);
+ 
 
-        pickedImage.texture = texture;
+     
     }
     
     
