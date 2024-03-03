@@ -6,12 +6,13 @@ public class LoadMaterial : MonoBehaviour
 {
     public Material _mat;
     public SkinnedMeshRenderer _meshRenderer;
-    [OnValueSynced(nameof(OnColorChanged))] public Color color;
+public Color color;
     public CoherenceSync _sync;
     private void Start()
     {
         try
         {
+       
             ChangeColor();
             _sync.SendCommand<LoadMaterial>(nameof(ChangeColor), Coherence.MessageTarget.Other);
         }
@@ -28,8 +29,5 @@ public class LoadMaterial : MonoBehaviour
         color = _mat.color;
         _meshRenderer.materials[2].color = _mat.color;
     }
-    public void OnColorChanged(Color color) 
-    {
-        _meshRenderer.materials[2].color = color;
-    }
+
 }

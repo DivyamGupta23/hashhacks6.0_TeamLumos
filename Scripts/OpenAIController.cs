@@ -22,7 +22,7 @@ public class OpenAIController : MonoBehaviour
     {
         // This line gets your API key (and could be slightly different on Mac/Linux)
         //api = new OpenAIAPI(Environment.GetEnvironmentVariable("OPENAI_API_KEY", EnvironmentVariableTarget.User));
-        api = new OpenAIAPI("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");
+        api = new OpenAIAPI("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");
         StartConversation();
         okButton.onClick.AddListener(() => GetResponse());
     }

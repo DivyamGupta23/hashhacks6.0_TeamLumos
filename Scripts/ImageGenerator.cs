@@ -61,7 +61,7 @@ public class ImageGenerator : MonoBehaviour
     {
         prompt = input.text ?? prompt;
         StartCoroutine(GenerateImageFromText(prompt,image1,spinner1,button1));
-        StartCoroutine(GenerateImageFromText(prompt+"2",image2,spinner2,button2));
+        StartCoroutine(GenerateImageFromText($"{prompt}2",image2,spinner2,button2));
     }
     public void PickOne()
     {

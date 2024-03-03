@@ -22,7 +22,7 @@ public class PlayerManager : MonoBehaviour
     //public Transform cafeSpawn;
     //public Transform lobbySpawn;
     public Transform mapSpawn;
-    public Transform theatreSpawn;
+    public Transform floorSpawn;
     public Transform roomSpawn;
     public Transform mallSpawn;
     public GameObject galleryUI;
@@ -63,7 +63,7 @@ public class PlayerManager : MonoBehaviour
         // spawn = GameObject.Find("spawntest").transform;
         mallSpawn = GameObject.Find("mallSpawn").transform;
         mapSpawn = GameObject.Find("mapSpawn").transform;
-        theatreSpawn = GameObject.Find("theatreSpawn").transform;
+        floorSpawn = GameObject.Find("2ndFloorSpawn").transform;
         movieManager = FindObjectOfType<MovieManager>();
         roomSpawn = GameObject.Find("roomSpawn").transform;
         bridge = FindObjectOfType<CoherenceBridge>();
@@ -178,10 +178,10 @@ public class PlayerManager : MonoBehaviour
         {
             TeleportFade(mapSpawn);
         }         
-        else if (other.CompareTag("theatreSpawn"))
+        else if (other.CompareTag("floor2"))
         {
-            if (!MovieManager.instance.IsPlaying) TeleportFade(theatreSpawn);
-            else Debug.Log("already playing a movie");
+          TeleportFade(floorSpawn);
+
         }          
         else if (other.CompareTag("roomSpawn"))
         {
